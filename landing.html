@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Lost Chapter — Inkwell Books</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Georgia', 'Times New Roman', serif;
+      background: #faf6f0 url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" opacity="0.04"><path d="M40 20 L60 20 L60 180 L40 180 Z M80 20 L100 20 L100 180 L80 180 Z M120 20 L140 20 L140 180 L120 180 Z M30 20 L50 20 L50 180 L30 180 Z M90 20 L110 20 L110 180 L90 180 Z M150 20 L170 20 L170 180 L150 180 Z" fill="%231e3a2f"/></svg>');
+      color: #1e1e1e;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    .hero {
+      background: linear-gradient(135deg, #1e3a2f 0%, #2a5a48 100%);
+      color: #faf6f0;
+      padding: 4rem 1.5rem 3rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '📖';
+      position: absolute;
+      font-size: 12rem;
+      opacity: 0.06;
+      top: -2rem;
+      right: -2rem;
+      transform: rotate(15deg);
+    }
+    .hero h1 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 0.5rem;
+    }
+    .hero p {
+      font-size: 1.15rem;
+      max-width: 560px;
+      margin: 0.5rem auto 1.5rem;
+      opacity: 0.9;
+    }
+    .form-card {
+      background: #fff;
+      max-width: 520px;
+      margin: -2rem auto 2rem;
+      padding: 2.5rem 2rem;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+      position: relative;
+      z-index: 2;
+    }
+    .form-card h2 {
+      font-size: 1.4rem;
+      margin-bottom: 0.3rem;
+      color: #1e3a2f;
+    }
+    .form-card .sub {
+      font-size: 0.95rem;
+      color: #666;
+      margin-bottom: 1.5rem;
+    }
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #333;
+      margin-bottom: 0.3rem;
+    }
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 1rem;
+      background: #fafafa;
+      transition: border 0.2s;
+    }
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #2a5a48;
+      background: #fff;
+    }
+    .btn {
+      width: 100%;
+      padding: 0.9rem;
+      background: #1e3a2f;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s;
+      font-family: inherit;
+    }
+    .btn:hover {
+      background: #2a5a48;
+    }
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    .perks {
+      max-width: 1000px;
+      margin: 3rem auto 2rem;
+      padding: 0 1.5rem;
+      text-align: center;
+    }
+    .perks h2 {
+      font-size: 1.6rem;
+      color: #1e3a2f;
+      margin-bottom: 1.5rem;
+    }
+    .flash-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+    .flash-card {
+      perspective: 800px;
+      cursor: default;
+    }
+    .flash-card-inner {
+      background: #fff;
+      padding: 2rem 1.2rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      border: 1px solid rgba(30, 58, 47, 0.06);
+      transition: transform 0.6s ease;
+      transform-style: preserve-3d;
+      position: relative;
+      min-height: 210px;
+    }
+    .flash-card:hover .flash-card-inner {
+      transform: rotateY(180deg);
+    }
+    .flash-card .front,
+    .flash-card .back {
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+    .flash-card .back {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      transform: rotateY(180deg);
+      border-radius: 16px;
+      background: linear-gradient(135deg, #1e3a2f, #2a5a48);
+      color: #faf6f0;
+      text-align: center;
+    }
+    .flash-card .back p {
+      font-size: 0.9rem;
+      line-height: 1.5;
+      color: rgba(250, 246, 240, 0.9);
+    }
+    .flash-card .back .back-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    .flash-card .icon {
+      font-size: 2.2rem;
+      margin-bottom: 0.8rem;
+    }
+    .flash-card h3 {
+      font-size: 1.1rem;
+      color: #1e3a2f;
+      margin-bottom: 0.4rem;
+    }
+    .flash-card .front p {
+      font-size: 0.85rem;
+      color: #666;
+      line-height: 1.5;
+    }
+    .flash-card .badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #1e3a2f, #2a5a48);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.8rem;
+      border-radius: 100px;
+      margin-top: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .books-section {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+      text-align: center;
+    }
+    .books-section h2 {
+      font-size: 1.6rem;
+      color: #1e3a2f;
+      margin-bottom: 1.5rem;
+    }
+    .book-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 1.2rem;
+      justify-items: center;
+    }
+    .book-cover {
+      width: 130px;
+      height: 195px;
+      border-radius: 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 0.8rem;
+      text-align: center;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.85rem;
+      line-height: 1.3;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      transition: transform 0.2s, box-shadow 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .book-cover:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.25);
+    }
+    .book-cover .author {
+      font-size: 0.7rem;
+      font-weight: 400;
+      opacity: 0.8;
+      margin-top: 0.3rem;
+    }
+    .book-cover .spine-line {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 6px;
+      background: rgba(0,0,0,0.15);
+      border-radius: 6px 0 0 6px;
+    }
+    .branches {
+      text-align: center;
+      padding: 2rem 1.5rem 3.5rem;
+    }
+    .branches h3 {
+      font-size: 1.2rem;
+      color: #1e3a2f;
+      margin-bottom: 1rem;
+    }
+    .branch-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem 1.2rem;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .branch-list span {
+      font-size: 0.9rem;
+      color: #555;
+    }
+    .branch-list span::before {
+      content: '📍';
+      margin-right: 0.2rem;
+    }
+    .footer {
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 0.8rem;
+      color: #999;
+      border-top: 1px solid #eee;
+    }
+    .success-msg {
+      display: none;
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+    .success-msg .big { font-size: 3rem; margin-bottom: 0.5rem; }
+    .success-msg h2 { color: #1e3a2f; margin-bottom: 0.5rem; }
+    .success-msg p { color: #666; max-width: 400px; margin: 0 auto; }
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 2rem; }
+      .flash-grid { grid-template-columns: 1fr; }
+      .book-grid { grid-template-columns: repeat(2, 1fr); }
+      .book-cover { width: 100%; height: 170px; }
+      .form-card { margin-left: 1rem; margin-right: 1rem; }
+    }
+    @media (max-width: 400px) {
+      .book-grid { grid-template-columns: repeat(2, 1fr); }
+      .book-cover { height: 150px; font-size: 0.75rem; }
+    }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <h1>The Lost Chapter</h1>
+    <p>6 weeks. 9 branches. 54 hidden books.<br />Sign up and we'll send you the clues.</p>
+  </section>
+
+  <div class="form-card" id="formCard">
+    <h2>Claim your first clue</h2>
+    <p class="sub">Join the hunt. Free books. No spam. Unsubscribe anytime.</p>
+    <form id="signupForm">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" placeholder="Your name" required />
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="you@example.com" required />
+      </div>
+      <div class="form-group">
+        <label for="branch">Nearest Inkwell branch</label>
+        <select id="branch" name="branch" required>
+          <option value="">Select your branch</option>
+          <option value="camden">Camden</option>
+          <option value="covent-garden">Covent Garden</option>
+          <option value="shoreditch">Shoreditch</option>
+          <option value="clapham">Clapham</option>
+          <option value="bristol">Bristol</option>
+          <option value="oxford">Oxford</option>
+          <option value="edinburgh">Edinburgh</option>
+          <option value="manchester">Manchester</option>
+          <option value="brighton">Brighton</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="genre">I mostly read...</label>
+        <select id="genre" name="genre">
+          <option value="">Pick a genre</option>
+          <option value="fiction">Fiction</option>
+          <option value="non-fiction">Non-fiction</option>
+          <option value="mystery">Mystery / Thriller</option>
+          <option value="romance">Romance</option>
+          <option value="scifi">Sci-Fi & Fantasy</option>
+          <option value="childrens">Children's & YA</option>
+          <option value="all">Everything</option>
+        </select>
+      </div>
+      <button type="submit" class="btn" id="submitBtn">Send me the first clue →</button>
+    </form>
+  </div>
+
+  <div class="success-msg" id="successMsg">
+    <div class="big">📖</div>
+    <h2>You're in.</h2>
+    <p>Check your inbox on December 1st for your first Lost Chapter clue. One of 54 hidden books has your name on it.</p>
+    <p style="margin-top:1rem;font-size:0.85rem;color:#999;">In the meantime, tell a friend → <strong>#InkwellLostChapter</strong></p>
+  </div>
+
+  <section class="perks">
+    <h2>✨ Why join Inkwell?</h2>
+    <div class="flash-grid">
+      <div class="flash-card">
+        <div class="flash-card-inner">
+          <div class="front">
+            <div class="icon">🎁</div>
+            <h3>10th Book Free</h3>
+            <p>Buy 9 books, get the 10th free. Every purchase earns a stamp.</p>
+            <span class="badge">Best value</span>
+          </div>
+          <div class="back">
+            <div class="back-icon">📖</div>
+            <p>Bring your card each visit. Digital members get free home delivery too.</p>
+          </div>
+        </div>
+      </div>
+      <div class="flash-card">
+        <div class="flash-card-inner">
+          <div class="front">
+            <div class="icon">📬</div>
+            <h3>Weekly Lost Chapters</h3>
+            <p>Exclusive excerpts + treasure hunt clues every Sunday.</p>
+          </div>
+          <div class="back">
+            <div class="back-icon">🔎</div>
+            <p>Find the hidden book in any branch and take it home — free.</p>
+          </div>
+        </div>
+      </div>
+      <div class="flash-card">
+        <div class="flash-card-inner">
+          <div class="front">
+            <div class="icon">🎉</div>
+            <h3>Member-only events</h3>
+            <p>Author nights, midnight launches, and behind-the-scenes access.</p>
+          </div>
+          <div class="back">
+            <div class="back-icon">🎟️</div>
+            <p>Early access to event tickets + signed first editions.</p>
+          </div>
+        </div>
+      </div>
+      <div class="flash-card">
+        <div class="flash-card-inner">
+          <div class="front">
+            <div class="icon">🚚</div>
+            <h3>Free delivery</h3>
+            <p>Free home delivery on all orders over £15. No minimum in-store.</p>
+          </div>
+          <div class="back">
+            <div class="back-icon">📦</div>
+            <p>Same-day click & collect at any branch. Order online, pick up in an hour.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="books-section">
+    <h2>📚 Popular at Inkwell</h2>
+    <div class="book-grid">
+      <div class="book-cover" style="background:linear-gradient(135deg,#740001,#ae0001);">
+        <div class="spine-line"></div>
+        Harry Potter and the Philosopher's Stone
+        <span class="author">J.K. Rowling</span>
+      </div>
+      <div class="book-cover" style="background:linear-gradient(135deg,#1a3a5c,#2d5f8a);">
+        <div class="spine-line"></div>
+        Harry Potter and the Chamber of Secrets
+        <span class="author">J.K. Rowling</span>
+      </div>
+      <div class="book-cover" style="background:linear-gradient(135deg,#2a6230,#3b8c42);">
+        <div class="spine-line"></div>
+        Harry Potter and the Prisoner of Azkaban
+        <span class="author">J.K. Rowling</span>
+      </div>
+      <div class="book-cover" style="background:linear-gradient(135deg,#1a237e,#3949ab);">
+        <div class="spine-line"></div>
+        Harry Potter and the Goblet of Fire
+        <span class="author">J.K. Rowling</span>
+      </div>
+      <div class="book-cover" style="background:linear-gradient(135deg,#b8860b,#daa520);">
+        <div class="spine-line"></div>
+        The Hobbit
+        <span class="author">J.R.R. Tolkien</span>
+      </div>
+      <div class="book-cover" style="background:linear-gradient(135deg,#4a148c,#7b1fa2);">
+        <div class="spine-line"></div>
+        The Night Circus
+        <span class="author">Erin Morgenstern</span>
+      </div>
+      <div class="book-cover" style="background:linear-gradient(135deg,#bf360c,#e64a19);">
+        <div class="spine-line"></div>
+        The Martian
+        <span class="author">Andy Weir</span>
+      </div>
+      <div class="book-cover" style="background:linear-gradient(135deg,#0d3b2e,#1b6d52);">
+        <div class="spine-line"></div>
+        Where the Crawdads Sing
+        <span class="author">Delia Owens</span>
+      </div>
+      <div class="book-cover" style="background:linear-gradient(135deg,#5d4037,#8d6e63);">
+        <div class="spine-line"></div>
+        The Song of Achilles
+        <span class="author">Madeline Miller</span>
+      </div>
+      <div class="book-cover" style="background:linear-gradient(135deg,#283593,#5c6bc0);">
+        <div class="spine-line"></div>
+        Dune
+        <span class="author">Frank Herbert</span>
+      </div>
+      <div class="book-cover" style="background:linear-gradient(135deg,#c62828,#ef5350);">
+        <div class="spine-line"></div>
+        Normal People
+        <span class="author">Sally Rooney</span>
+      </div>
+      <div class="book-cover" style="background:linear-gradient(135deg,#37474f,#607d8b);">
+        <div class="spine-line"></div>
+        ​1984
+        <span class="author">George Orwell</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="branches">
+    <h3>📍 All 9 branches are playing</h3>
+    <div class="branch-list">
+      <span>Camden</span>
+      <span>Covent Garden</span>
+      <span>Shoreditch</span>
+      <span>Clapham</span>
+      <span>Bristol</span>
+      <span>Oxford</span>
+      <span>Edinburgh</span>
+      <span>Manchester</span>
+      <span>Brighton</span>
+    </div>
+  </section>
+
+  <footer class="footer">
+    Inkwell Books &mdash; 9 independent bookshops. One community.
+  </footer>
+
+  <script>
+    const form = document.getElementById('signupForm');
+    const formCard = document.getElementById('formCard');
+    const successMsg = document.getElementById('successMsg');
+    const submitBtn = document.getElementById('submitBtn');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending...';
+
+      const data = {
+        name: document.getElementById('name').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        branch: document.getElementById('branch').value,
+        genre: document.getElementById('genre').value,
+      };
+
+      try {
+        const res = await fetch('https://api.inkwellbooks.com/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+
+        if (!res.ok) throw new Error('Network error');
+      } catch (err) {
+        // Fallback: store locally to not lose the lead
+        const stored = JSON.parse(localStorage.getItem('inkwell_signups') || '[]');
+        stored.push({ ...data, timestamp: new Date().toISOString() });
+        localStorage.setItem('inkwell_signups', JSON.stringify(stored));
+      }
+
+      formCard.style.display = 'none';
+      successMsg.style.display = 'block';
+    });
+  </script>
+</body>
+</html>
